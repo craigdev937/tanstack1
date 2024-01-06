@@ -1,15 +1,27 @@
 import React from "react";
 import "./App.css";
-import James from "@public/James Gandolfini.webp";
+import { QueryClientProvider, 
+    QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Todos } from "../containers/Todos";
+
+const QClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: 5,
+            retryDelay: 1000
+        }
+    }
+});
 
 export const App = () => {
     return (
-        <React.Fragment>
-            <img
-                height="600px" width="auto" 
-                src={James} alt="James Gandolfini" 
-            />
-        </React.Fragment>
+        <QueryClientProvider client={QClient}>
+            <React.Fragment>
+                <Todos />
+                <ReactQueryDevtools initialIsOpen={false} />
+            </React.Fragment>
+        </QueryClientProvider>
     );
 };
 
