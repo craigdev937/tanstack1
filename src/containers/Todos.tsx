@@ -1,19 +1,20 @@
 import React from "react";
-import { useTodosIds } from "../global/Queries";
+import { useTodos, useTodosIds } from "../global/Queries";
 
 export const Todos = () => {
     const todosIdsQuery = useTodosIds();
-
-    if (todosIdsQuery.error) return <h1>Error: s</h1>
-    if (todosIdsQuery.isPending) return <h1>Loading...</h1>
+    const todosQueries = useTodos(todosIdsQuery.data);
 
     return (
         <React.Fragment>
-            {todosIdsQuery.data.map((todo) => (
-                <aside key={todo.id}>
-                    <h1>{todo.title}</h1>
-                    <p>{todo.description}</p>
-                </aside>
+            {todosQueries.map(({ data }) => (
+                <li key={data?.id}>
+                    <div>ID: {data?.id}</div>
+                    <span>
+                        <strong>Title:</strong> {data?.title},{" "}
+                        <strong>Description:</strong> {data?.description}
+                    </span>
+                </li>
             ))}
         </React.Fragment>
     );
